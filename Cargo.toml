@@ -1,0 +1,26 @@
+[package]
+name = "axum-auth"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+argon2 = "0.5.0"
+async-trait = "0.1.68"
+chrono = { version = "0.4.24", features = ["serde"] }
+dotenv = "0.15.0"
+jsonwebtoken = "9.3.1"
+serde = { version = "1.0.163", features = ["derive"] }
+serde_json = "1.0.140"
+sqlx = { version = "0.8.5", features = ["postgres", "chrono", "json", "runtime-async-std-native-tls", "uuid"] }
+uuid = { version = "1.4.1", features = ["serde", "v4"] }
+validator = { version = "0.20.0", features = ["derive"] }
+axum = "0.8.3"
+axum-extra = {variant = "full", version = "0.10.1"}
+tokio = { version = "1.39.3", features = ["full"] }
+time = "0.3.41"
+tower = "0.5.2"
+tower-http = { version = "0.6.2", features = ["cors", "trace"] }
+tracing-subscriber = "0.3.19"
+lettre = "0.11.15"
+sea-orm = { version = "1.1", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros", "with-chrono", "with-uuid"] }
+anyhow = "1.0.75"
