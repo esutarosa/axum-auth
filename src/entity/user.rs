@@ -1,33 +1,34 @@
-use sea_orm::entity::prelude::*;
+use chrono::prelude::*;
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
 
-#[derive(Clone, Debug, PartialEq, DeriveEntityModel, Deserialize, Serialize)]
-#[sea_orm(table_name = "users")]
-pub struct Model {
-    #[sea_orm(primary_key)]
-    pub id: Uuid,
-    pub name: String,
-    pub email: String,
-    pub verified: bool,
-    pub password: String,
-    pub verification_token: Option<String>,
-    pub token_expires_at: Option<DateTimeWithTimeZone>,
-    pub role: UserRole,
-    pub created_at: DateTimeWithTimeZone,
-    pub updated_at: DateTimeWithTimeZone,
-}
-
-#[derive(Copy, Clone, Debug, PartialEq, EnumIter, DeriveActiveEnum, Deserialize, Serialize)]
-#[sea_orm(rs_type = "String", db_type = "Enum", enum_name = "user_role")]
+#[derive(Debug, Deserialize, Serialize, Clone, Copy, sqlx::Type, PartialEq)]
+#[sqlx(type_name = "user_role", rename_all = "lowercase")]
 pub enum UserRole {
-    #[sea_orm(string_value = "admin")]
     Admin,
-    #[sea_orm(string_value = "user")]
     User,
 }
 
-#[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
-pub enum Relation {}
+impl UserRole {
+    pub fn to_str(&self) -> &str {
+        match self {
+            UserRole::Admin => "admin",
+            UserRole::User => "user",
+        }
+    }
+}
 
-impl ActiveModelBehavior for ActiveModel {}
+#[derive(Debug, Deserialize, Serialize, sqlx::FromRow, sqlx::Type, Clone)]
+pub struct User {
+    pub id: uuid::Uuid,
+    pub name: String,
+    pub email: String,
+    pub password: String,
+    pub role: UserRole,
+    pub verified: bool,
+    pub verification_token: Option<String>,
+    pub token_expires_at: Option<DateTime<Utc>>,
+    #[serde(rename = "createdAt")]
+    pub created_at: Option<DateTime<Utc>>,
+    #[serde(rename = "updatedAt")]
+    pub updated_at: Option<DateTime<Utc>>,
+}

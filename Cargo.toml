@@ -22,5 +22,3 @@ tower = "0.5.2"
 tower-http = { version = "0.6.2", features = ["cors", "trace"] }
 tracing-subscriber = "0.3.19"
 lettre = "0.11.15"
-sea-orm = { version = "1.1", features = ["sqlx-postgres", "runtime-tokio-native-tls", "macros", "with-chrono", "with-uuid"] }
-anyhow = "1.0.75"
