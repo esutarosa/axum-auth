@@ -1,5 +1,6 @@
 mod config;
 mod db;
+mod dtos;
 mod entity;
 mod error;
 
